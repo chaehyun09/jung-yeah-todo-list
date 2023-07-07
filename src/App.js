@@ -89,7 +89,7 @@ function App() {
 const StForm = styled.form`
   display: flex;
   align-items: center;
-  margin: 10px;
+  margin: 20px;
 `;
 
 const StCard = styled.div`
