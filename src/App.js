@@ -17,6 +17,9 @@ function App() {
     { id: nanoid(), content: "자바스크립트 마스터하기", like: 0 },
   ]);
 
+  const [selected, setSelected] = useState("");
+  const [isDark, setIsDark] = useState(true);
+
   return (
     <>
       <StForm>
@@ -91,6 +94,35 @@ function App() {
             </StCard>
           );
         })}
+      </div>
+      <br />
+      <div>
+        선택과제
+        <select
+          onChange={(e) => {
+            setSelected(e.target.value);
+          }}
+        >
+          <option>선택하세요</option>
+          <option>멋진바지</option>
+          <option>간지나는셔츠</option>
+          <option>보란색셔츠</option>
+        </select>
+        <div>{selected}</div>
+        <div
+          style={{
+            backgroundColor: isDark ? "black" : "white",
+            color: isDark ? "white" : "black",
+          }}
+        >
+          {isDark ? "다크모드" : "화이트모드"}
+        </div>
+        <input
+          type="checkbox"
+          onChange={() => {
+            setIsDark(!isDark);
+          }}
+        />
       </div>
     </>
   );
