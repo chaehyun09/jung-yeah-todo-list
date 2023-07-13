@@ -1,21 +1,20 @@
 import "./App.css";
 import { useState } from "react";
 import { styled } from "styled-components";
-
-let number = 4;
+import { nanoid } from "nanoid";
 
 function App() {
-  const initialState = {
-    id: 0,
+  const [todo, setTodo] = useState({
+    id: "",
     content: "",
-  };
-  const [todo, setTodo] = useState(initialState);
-  const [likes, setLikes] = useState([0, 0, 0, 0]);
+    like: 0,
+  });
+  // const [likes, setLikes] = useState([0, 0, 0, 0]);
   const [todos, setTodos] = useState([
-    { id: 0, content: "리액트 공부하기" },
-    { id: 1, content: "점심 먹기" },
-    { id: 2, content: "자바스크립트 공부하기" },
-    { id: 3, content: "자바스크립트 마스터하기" },
+    { id: nanoid(), content: "리액트 공부하기", like: 0 },
+    { id: nanoid(), content: "점심 먹기", like: 0 },
+    { id: nanoid(), content: "자바스크립트 공부하기", like: 0 },
+    { id: nanoid(), content: "자바스크립트 마스터하기", like: 0 },
   ]);
 
   return (
@@ -30,8 +29,8 @@ function App() {
             setTodo({
               ...todo,
               content: e.target.value,
-              id: number,
             });
+            console.log(todo);
           }}
         />
         <StButton
@@ -40,10 +39,12 @@ function App() {
             if (todo.content.trim() === "") {
               alert("할 일을 입력해주세요!");
             } else {
-              setLikes([...likes, 0]);
-              setTodos([...todos, todo]);
-              setTodo(initialState);
-              number += 1;
+              const plusTodo = { ...todo, id: nanoid() };
+              setTodos([...todos, plusTodo]);
+              setTodo({
+                id: "",
+                content: "",
+              });
             }
             console.log(todos);
           }}
@@ -56,12 +57,12 @@ function App() {
           return (
             <StCard key={todo.id}>
               <p>{todo.content}</p>
-              <p> 💙 {likes[todo.id]}</p>
+              <p> 💙 {todo.like}</p>
               <div className="button-set">
                 <StButton
                   onClick={() => {
                     const newTodos = todos.filter((td) => {
-                      return td.id !== todo.id;
+                      return todo.id !== td.id;
                     });
                     setTodos(newTodos);
                   }}
@@ -70,9 +71,18 @@ function App() {
                 </StButton>
                 <StButton
                   onClick={() => {
-                    const newLikes = [...likes];
-                    newLikes[todo.id]++;
-                    setLikes(newLikes);
+                    console.log(todo.id);
+                    const likeUp = todos.map((td) => {
+                      if (td.id === todo.id) {
+                        return {
+                          ...td,
+                          like: td.like + 1,
+                        };
+                      } else {
+                        return td;
+                      }
+                    });
+                    setTodos(likeUp);
                   }}
                 >
                   좋아요
